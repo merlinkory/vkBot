@@ -1,0 +1,4 @@
+go get github.com/SevereCloud/vksdk/v2@latest
+go get github.com/SevereCloud/vksdk/v2/api@v2.15.0
+go get github.com/go-sql-driver/mysql
+go get github.com/joho/godotenv
