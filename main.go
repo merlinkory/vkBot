@@ -23,8 +23,9 @@ func init() {
 	}
 }
 
-const SQL_DRIVER = "mysql"
-const DB_CREDENTIAL = "root@/vkbot"
+var SQL_DRIVER = os.Getenv("SQL_DRIVER")
+
+var DB_CREDENTIAL = os.Getenv("DB_CREDENTIAL")
 
 type user struct {
 	id      int
