@@ -23,7 +23,6 @@ func init() {
 	}
 }
 
-const VK_ACCESS_TOKEN string = "vk1.a.tww7sZHMFaXkLb-tWCNXFdP3m3nW8aHnW5a7mgVkwlLi9enNUx562h_umdcR1iLIa3rs9Ry-KZBbmB24WFX48BzYEQvApOlm0WKcbMO5uJ99qJVIf9KleFsAtTf6TZOJLczNcj8vHhbXjE2m1AjnGLL5pMeUVZgkwrllNoSZogULoIETH24cvOPesVPoWVoB"
 const SQL_DRIVER = "mysql"
 const DB_CREDENTIAL = "root@/vkbot"
 
