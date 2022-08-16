@@ -23,9 +23,9 @@ func init() {
 	}
 }
 
-var SQL_DRIVER = os.Getenv("SQL_DRIVER")
+var SQL_DRIVER string
 
-var DB_CREDENTIAL = os.Getenv("DB_CREDENTIAL")
+var DB_CREDENTIAL string
 
 type user struct {
 	id      int
@@ -38,21 +38,21 @@ type user struct {
 func getSecretPhrases() map[string]string {
 	return map[string]string{
 		"fanfic": "фанфик",
-		"origin": "ориджин",
+		"origin": "оридж",
 	}
 }
 
 func getWellcomePhrases() map[string]string {
 	return map[string]string{
-		"fanfic": "Привет проголосуйте за фанфик, вот список юзеров:",
-		"origin": "Привет проголосуйте за ориджин, вот список юзеров:",
+		"fanfic": "Привет! Список участников конкурса сетературы в номинации «фанфикшен»:\n1. https://clck.ru/sTvSP\n2. https://clck.ru/sTvSc\n3. https://clck.ru/sTvSy\n4. https://clck.ru/sTvTD\n\nЧтобы проголосовать за понравившуюся работу, пришлите ее порядковый номер (только цифры).\nПроголосовать можно лишь один раз, изменить выбор, после того как проголосуете, будет нельзя.",
+		"origin": "Привет! Список участников конкурса сетературы в номинации «ориджинал фикшен»:\n1. О неподходящих сказках и неожиданных концовках семейных легенд: https://clck.ru/sSJdM\n2. Поцелуй электродрели https://clck.ru/sSJew\n3. Волшебное кушанье https://clck.ru/sSJfn\n4. Шутники https://clck.ru/sSJgV\n5. Game over https://clck.ru/sSJgx\n6. Кружавчики https://clck.ru/sSJhe\n7. Лилия демона https://clck.ru/sSJiL\n8. Вооружена и особо «опасна» https://clck.ru/sSJjL\n9. Беседа https://clck.ru/sSJkM\n10. Играй! https://clck.ru/sSJnU\n11. «Надежда», или Плавание в край жемчуга https://clck.ru/sSJoJ\n12. Дело полное изменений https://clck.ru/sSJph\n13. В этом мире смерти нет? https://clck.ru/sSJqz\n14. Дар https://clck.ru/sTvPW\n15. «Он врывается без стука и уходит, не сказав» https://clck.ru/sSJtW\n\nЧтобы проголосовать за понравившуюся работу, пришлите ее порядковый номер (только цифры).\n Проголосовать можно лишь один раз, изменить выбор, после того как проголосуете, будет нельзя.",
 	}
 }
 
 func getPhrasesForDoneUsers() map[string]string {
 	return map[string]string{
-		"fanfic": "Вы уже голосовали за фанфик, спасибо!!!",
-		"origin": "Вы уже голосовали за ориджин, спасибо!!!",
+		"fanfic": "Привет! Ты уже проголосовал в этом конкурсе. Увы, повторно проголосовать нельзя.",
+		"origin": "Привет! Ты уже проголосовал в этом конкурсе. Увы, повторно проголосовать нельзя.",
 	}
 }
 
@@ -61,9 +61,9 @@ func getAnswerConditions() map[string]map[string]int {
 
 	dataCondition["fanfic"] = map[string]int{}
 	dataCondition["fanfic"]["min"] = 1
-	dataCondition["fanfic"]["max"] = 10
+	dataCondition["fanfic"]["max"] = 4
 	dataCondition["origin"] = map[string]int{}
-	dataCondition["origin"]["min"] = 11
+	dataCondition["origin"]["min"] = 1
 	dataCondition["origin"]["max"] = 15
 
 	return dataCondition
@@ -72,6 +72,8 @@ func getAnswerConditions() map[string]map[string]int {
 //
 func main() {
 
+	SQL_DRIVER = os.Getenv("SQL_DRIVER")
+	DB_CREDENTIAL = os.Getenv("DB_CREDENTIAL")
 	vk := api.NewVK(os.Getenv("VK_ACCESS_TOKEN"))
 
 	// get information about the group
@@ -117,9 +119,9 @@ func main() {
 				//обновляем статус юзера, что он успешно проголосовал
 				updateUserStatus(userId, currentUserVote, "done")
 
-				sendVkMessage(userId, "Спасибо за ваш голос", vk)
+				sendVkMessage(userId, "Спасибо, ваш голос учтен! =)", vk)
 			} else {
-				sendVkMessage(userId, "Вы должна ввести корректную цифру", vk)
+				sendVkMessage(userId, "Привет! Ты ввел непонятную команду. Чтобы проголосовать за понравившуюся работу, пришлите ее порядковый номер (только цифры). То есть, если тебе понравилась работа под номером 1, просто напиши в ответном сообщении одну цифру: 1", vk)
 			}
 			// смотри какие для данного currentUserVote есть правила
 
